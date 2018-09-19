@@ -1,16 +1,16 @@
 // define variables
-var game;
-var player;
-var platforms;
-var badges;
-var items;
-var cursors;
-var jumpButton;
-var text;
-var winningMessage;
-var won = false;
-var currentScore = 0;
-var winningScore = 100;
+let game;
+let player;
+let platforms;
+let badges;
+let items;
+let cursors;
+let jumpButton;
+let text;
+let winningMessage;
+let won = false;
+let currentScore = 0;
+let winningScore = 100;
 
 // add collectable items to the game
 function addItems() {
@@ -48,7 +48,7 @@ function addPlatforms() {
 
 // create a single animated item and add to screen
 function createItem(left, top, image) {
-  var item = items.create(left, top, image);
+  let item = items.create(left, top, image);
   item.animations.add('spin');
   item.animations.play('spin', 10, true);
 }
@@ -56,7 +56,7 @@ function createItem(left, top, image) {
 // create the winning badge and add to screen
 function createBadge() {
   badges = game.add.physicsGroup();
-  var badge = badges.create(750, 400, 'badge');
+  let badge = badges.create(750, 400, 'badge');
   badge.animations.add('spin');
   badge.animations.play('spin', 10, true);
 }
@@ -64,7 +64,14 @@ function createBadge() {
 // when the player collects an item on the screen
 function itemHandler(player, item) {
   item.kill();
-  currentScore = currentScore + 10;
+  if (item.key === 'coin') {
+    currentScore = currentScore + 10;
+  } else if (item.key === 'poison') {
+    currentScore = currentScore - 25;
+  } else if (item.key === 'star') {
+    currentScore = currentScore + 25;
+  }
+  
   if (currentScore === winningScore) {
       createBadge();
   }
@@ -143,7 +150,7 @@ window.onload = function () {
     if (jumpButton.isDown && (player.body.onFloor() || player.body.touching.down)) {
       player.body.velocity.y = -400;
     }
-    // when the player winw the game
+    // when the player wins the game
     if (won) {
       winningMessage.text = "YOU WIN!!!";
     }
